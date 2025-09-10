@@ -30,8 +30,9 @@ RUN apt-get update && \
       docker-compose-plugin \
       && rm -rf /var/lib/apt/lists/*
 
-# Create coder user with sudo
-RUN useradd -m -s /bin/bash -G sudo coder
+# Create coder user with sudo and docker group
+RUN groupadd -f docker && \
+    useradd -m -s /bin/bash -G sudo,docker coder
 
 # Fancy prompt
 RUN echo "PS1='🐳 \[\033[1;36m\]\h \[\033[1;34m\]\W\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'" > /home/coder/.bashrc && \
@@ -42,7 +43,3 @@ RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder && \
     chmod 0440 /etc/sudoers.d/coder
 
 USER coder
-
-# Start Docker daemon automatically when container starts
-ENTRYPOINT ["dockerd-entrypoint.sh"]
-CMD ["sh", "-c", "dockerd & sleep 2 && exec bash"]
