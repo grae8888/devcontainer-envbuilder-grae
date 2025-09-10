@@ -42,3 +42,7 @@ RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder && \
     chmod 0440 /etc/sudoers.d/coder
 
 USER coder
+
+# Start Docker daemon automatically when container starts
+ENTRYPOINT ["dockerd-entrypoint.sh"]
+CMD ["sh", "-c", "dockerd & sleep 2 && exec bash"]
