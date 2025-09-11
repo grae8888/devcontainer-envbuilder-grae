@@ -1,13 +1,5 @@
 {
     "build": {
         "dockerfile": "Dockerfile"
-    },
-    "runArgs": [
-        "--privileged",
-        "--security-opt=seccomp=unconfined",
-        "--security-opt=apparmor=unconfined",
-        "--device=/dev/fuse"
-    ],
-    "containerEnv": { "ROOTLESSKIT_NO_CLONE3": "1" },
-    "postStartCommand": "XDG_RUNTIME_DIR=$HOME/.docker/run mkdir -p $XDG_RUNTIME_DIR $HOME/.local/share/docker && nohup dockerd-rootless.sh --storage-driver=fuse-overlayfs > $HOME/.local/share/docker/dockerd.log 2>&1 &"
+    }
 }
