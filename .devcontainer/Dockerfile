@@ -1,45 +1,22 @@
-FROM ubuntu
+# Runs dockerd inside the container
+FROM docker:27-dind
 
-# Install base tools
-RUN apt-get update && \
-    apt-get install -y \
-      vim \
-      sudo \
-      curl \
-      ca-certificates \
-      gnupg \
-      lsb-release \
-      && rm -rf /var/lib/apt/lists/*
+# --- Configurable IDs ---
+ARG USER=coder
+ARG UID=1000
+ARG GID=1000
 
-# Add Docker’s official GPG key
-RUN mkdir -p /etc/apt/keyrings && \
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+# Disable TLS for simplicity (use TLS in prod if you need remote access)
+ENV DOCKER_TLS_CERTDIR=""
 
-# Add Docker apt repository
-RUN echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+# Install sudo + bash and create 'coder' with passwordless sudo
+RUN apk add --no-cache bash sudo \
+ && addgroup -g ${GID} ${USER} \
+ && adduser  -D -G ${USER} -u ${UID} -h /home/${USER} -s /bin/bash ${USER} \
+ && addgroup ${USER} docker \
+ && addgroup ${USER} wheel \
+ && printf '%%wheel ALL=(ALL) NOPASSWD:ALL\n' > /etc/sudoers.d/010-wheel-nopasswd
 
-# Install Docker Engine + CLI + Compose plugin
-RUN apt-get update && \
-    apt-get install -y \
-      docker-ce \
-      docker-ce-cli \
-      containerd.io \
-      docker-buildx-plugin \
-      docker-compose-plugin \
-      && rm -rf /var/lib/apt/lists/*
-
-# Create coder user with sudo and docker group
-RUN groupadd -f docker && \
-    useradd -m -s /bin/bash -G sudo,docker coder
-
-# Fancy prompt
-RUN echo "PS1='🐳 \[\033[1;36m\]\h \[\033[1;34m\]\W\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'" > /home/coder/.bashrc && \
-    chown coder:coder /home/coder/.bashrc
-
-# Allow passwordless sudo
-RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder && \
-    chmod 0440 /etc/sudoers.d/coder
-
-USER coder
+# Expose the non-TLS dockerd port (since DOCKER_TLS_CERTDIR is empty)
+EXPOSE 2375
+VOLUME /var/lib/docker
