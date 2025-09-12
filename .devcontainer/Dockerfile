@@ -1,22 +1,21 @@
-# Runs dockerd inside the container
-FROM docker:27-dind
+# Rootless Docker-in-Docker
+FROM docker:27-dind-rootless
 
-# --- Configurable IDs ---
-ARG USER=coder
-ARG UID=1000
-ARG GID=1000
+# (Optional) extras; image already includes what's needed for rootless,
+# but bash/fuse-overlayfs/uidmap are harmless to ensure availability.
+RUN apk add --no-cache bash shadow-uidmap fuse-overlayfs
 
-# Disable TLS for simplicity (use TLS in prod if you need remote access)
+# Disable TLS and point the CLI to the rootless socket
 ENV DOCKER_TLS_CERTDIR=""
+ENV XDG_RUNTIME_DIR=/run/user/1000
+ENV DOCKER_HOST=unix:///run/user/1000/docker.sock
 
-# Install sudo + bash and create 'coder' with passwordless sudo
-RUN apk add --no-cache bash sudo \
- && addgroup -g ${GID} ${USER} \
- && adduser  -D -G ${USER} -u ${UID} -h /home/${USER} -s /bin/bash ${USER} \
- && addgroup ${USER} docker \
- && addgroup ${USER} wheel \
- && printf '%%wheel ALL=(ALL) NOPASSWD:ALL\n' > /etc/sudoers.d/010-wheel-nopasswd
+# Persist daemon data
+VOLUME ["/home/rootless/.local/share/docker"]
 
-# Expose the non-TLS dockerd port (since DOCKER_TLS_CERTDIR is empty)
+# Optional TCP listener (INSECURE if published beyond localhost)
 EXPOSE 2375
-VOLUME /var/lib/docker
+
+# Pass flags to the image’s entrypoint (dockerd-rootless.sh)
+# Keeps unix socket + adds tcp listener (remove the tcp host if you don't need it)
+CMD ["--host=unix:///run/user/1000/docker.sock", "--host=tcp://0.0.0.0:2375"]
