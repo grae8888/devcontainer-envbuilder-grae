@@ -1,18 +1,22 @@
 FROM ubuntu:24.04
 
-# --- Configurable IDs ---
-ARG USER=coder
+# ---- Configurable ----
+ARG USERNAME=coder
 ARG UID=1000
 ARG GID=1000
 
-# Install sudo and create the user
-RUN apt-get update && apt-get install -y sudo ca-certificates bash && rm -rf /var/lib/apt/lists/* \
- && groupadd -g ${GID} ${USER} \
- && useradd -m -u ${UID} -g ${GID} -s /bin/bash ${USER} \
- && usermod -aG sudo ${USER} \
- && echo "${USER} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-${USER}-nopasswd \
- && chmod 0440 /etc/sudoers.d/010-${USER}-nopasswd
+# Create user/group and passwordless sudo
+RUN apt-get update && apt-get install -y --no-install-recommends sudo ca-certificates bash \
+ && groupadd --gid ${GID} ${USERNAME} \
+ && useradd --uid ${UID} --gid ${GID} -m -s /bin/bash ${USERNAME} \
+ && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-${USERNAME}-nopasswd \
+ && chmod 0440 /etc/sudoers.d/010-${USERNAME}-nopasswd \
+ && rm -rf /var/lib/apt/lists/*
 
-USER ${USER}
-WORKDIR /home/${USER}
+# Make sure $USER and $HOME are set at runtime (some tools rely on these)
+ENV USER=${USERNAME} \
+    HOME=/home/${USERNAME}
+
+WORKDIR /home/${USERNAME}
+USER ${USERNAME}
 SHELL ["/bin/bash", "-lc"]
