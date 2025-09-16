@@ -18,3 +18,7 @@ RUN echo "PS1='🐳 \[\033[1;36m\]\h \[\033[1;34m\]\W\[\033[0;35m\] \[\033[1;36m
     chown coder:coder /home/coder/.bashrc
 
 USER coder
+
+COPY install-docker.sh .
+
+RUN chmod +x install-docker.sh && ./install-docker.sh
