@@ -21,4 +21,4 @@ COPY install-docker.sh .
 
 USER coder
 
-CMD ["bash", "-c", "./install-docker.sh && exec bash"]
+CMD ["./install-docker.sh"]
