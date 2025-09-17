@@ -10,7 +10,7 @@
         "-h", "${localEnv:HOSTNAME}"
     ],
     "workspaceFolder": "/workspaces",
-    "workspaceMount": "source=${localEnv:HOME}/envbuilder,target=/workspaces,type=bind",
+    "workspaceMount": "source=/workspaces,target=/workspaces,type=bind",
     "containerEnv": {
         "DOCKER_TLS_CERTDIR": ""
     }
