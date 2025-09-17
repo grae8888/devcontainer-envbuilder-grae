@@ -9,7 +9,7 @@ TARGET_HOME="$(getent passwd "$TARGET_USER" | cut -d: -f6)"
 
 echo "[INFO] Installing Docker and rootless prerequisites..."
 sudo apt-get update
-sudo apt-get install -y uidmap slirp4netns iproute2 dbus-user-session fuse \
+sudo apt-get install -y uidmap slirp4netns iproute2 dbus-user-session \
                         curl ca-certificates gnupg lsb-release
 
 echo "[INFO] Installing Docker (rootful engine + CLI via convenience script)..."
@@ -72,4 +72,6 @@ echo "[INFO] For rootless, run:  ~/${TARGET_HOME##*/}/start-rootless-docker.sh  
 echo "Docker installed successfully!"
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
+sudo usermod --add-subuids 165536-231071 "$USER"
+sudo usermod --add-subgids 165536-231071 "$USER"
 ~/start-rootless-docker.sh
