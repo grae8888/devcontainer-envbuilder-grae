@@ -72,6 +72,8 @@ echo "[INFO] For rootless, run:  ~/${TARGET_HOME##*/}/start-rootless-docker.sh  
 echo "Docker installed successfully!"
 export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
-~/start-rootless-docker.sh
 sudo usermod --add-subuids 165536-231071 "$USER"
 sudo usermod --add-subgids 165536-231071 "$USER"
+echo "$USER"
+echo "huh"
+~/start-rootless-docker.sh
