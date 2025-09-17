@@ -3,9 +3,15 @@
         "dockerfile": "Dockerfile"
     },
     "onCreateCommand": "/install-docker.sh",
+    "remoteUser": "coder",
     "runArgs": [
-        "--rm",
-        "--net=host",
-        "--privileged"
-    ]
+        "--privileged",
+        "--network=host",
+        "-h", "${localEnv:HOSTNAME}"
+    ],
+    "workspaceFolder": "/workspaces",
+    "workspaceMount": "source=${localEnv:HOME}/envbuilder,target=/workspaces,type=bind",
+    "containerEnv": {
+        "DOCKER_TLS_CERTDIR": ""
+    }
 }
