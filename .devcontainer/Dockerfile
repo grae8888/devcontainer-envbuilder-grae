@@ -17,10 +17,18 @@ RUN useradd -m -s /bin/bash coder && \
 RUN echo "PS1='🐳 \[\033[1;36m\]\h \[\033[1;34m\]\W\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'" > /home/coder/.bashrc && \
     chown coder:coder /home/coder/.bashrc
 
-COPY install-docker.sh .
+COPY install-docker.sh /install-docker.sh
+
+RUN chmod +x /install-docker.sh
+
+RUN printf '%s\n' \
+  '#!/usr/bin/env bash' \
+  'set -Eeuo pipefail' \
+  'echo "[entrypoint] starting install-docker.sh..."' \
+  'exec bash -x /install-docker.sh' \
+  > /usr/local/bin/entrypoint.sh && \
+  chmod +x /usr/local/bin/entrypoint.sh
 
 USER coder
 
-CMD ["sudo chmod +x /install-docker.sh"]
-
-CMD ["/install-docker.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
