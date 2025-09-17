@@ -21,14 +21,4 @@ COPY install-docker.sh /install-docker.sh
 
 RUN chmod +x /install-docker.sh
 
-RUN printf '%s\n' \
-  '#!/usr/bin/env bash' \
-  'set -Eeuo pipefail' \
-  'echo "[entrypoint] starting install-docker.sh..."' \
-  'exec bash -x /install-docker.sh' \
-  > /usr/local/bin/entrypoint.sh && \
-  chmod +x /usr/local/bin/entrypoint.sh
-
 USER coder
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
