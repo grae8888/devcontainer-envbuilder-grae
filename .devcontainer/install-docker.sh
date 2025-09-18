@@ -74,4 +74,4 @@ export XDG_RUNTIME_DIR="/run/user/$(id -u)"
 export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/docker.sock"
 sudo usermod --add-subuids 165536-231071 "$TARGET_USER"
 sudo usermod --add-subgids 165536-231071 "$TARGET_USER"
-~/start-rootless-docker.sh
+sudo -iu "$TARGET_USER" bash -lc '~/start-rootless-docker.sh'
