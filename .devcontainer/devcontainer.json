@@ -2,6 +2,7 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "onCreateCommand": "/install-docker.sh",
     "remoteUser": "coder",
     "runArgs": [
         "--privileged",
