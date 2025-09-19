@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Ensure we're root (re-exec via sudo if not)
-if [ "${EUID:-$(id -u)}" -ne 0 ]; then
-  exec sudo -E bash "$0"
-fi
-
+# Always elevate and run the privileged body
+exec sudo -E bash -c '
+set -euo pipefail
 SOCK=/var/run/docker.sock
 
 if [ -S "$SOCK" ]; then
@@ -14,3 +12,4 @@ if [ -S "$SOCK" ]; then
   grp="$(getent group "$gid" | cut -d: -f1 || true)"
   [ -n "$grp" ] && usermod -aG "$grp" coder || true
 fi
+'
