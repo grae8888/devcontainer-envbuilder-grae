@@ -2,6 +2,7 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "onCreateCommand": "/coder-socket-access.sh",
     "runArgs": [
         "--privileged",
         "--network=host",
