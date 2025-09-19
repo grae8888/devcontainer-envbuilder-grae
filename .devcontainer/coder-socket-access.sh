@@ -12,4 +12,6 @@ if [ -S "$SOCK" ]; then
   grp="$(getent group "$gid" | cut -d: -f1 || true)"
   [ -n "$grp" ] && usermod -aG "$grp" coder || true
 fi
+
+sudo su - coder
 '
