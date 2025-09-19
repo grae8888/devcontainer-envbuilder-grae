@@ -13,4 +13,4 @@ RUN groupadd -g ${GID} ${USERNAME} \
  && chmod 0440 /etc/sudoers.d/010-${USERNAME}-nopasswd
 
 USER ${USERNAME}
-WORKDIR /home/${USERNAME}
+WORKDIR /workspaces
