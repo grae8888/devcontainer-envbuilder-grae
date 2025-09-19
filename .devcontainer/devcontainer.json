@@ -2,9 +2,6 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "onCreateCommand": "/install-docker.sh",
-    "remoteUser": "coder",
-    "containerUser": "coder",
     "runArgs": [
         "--privileged",
         "--network=host",
