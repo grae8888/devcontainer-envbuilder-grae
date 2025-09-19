@@ -28,6 +28,8 @@ RUN chmod +x /coder-socket-access.sh
 
 WORKDIR /workspaces
 
+USER coder
+
 # USER coder
 
 # Entrypoint ensures coder can access mounted docker.sock
