@@ -25,7 +25,7 @@ RUN groupadd -r coder \
 
 WORKDIR /workspaces
 
-USER coder
+# USER coder
 
 # Entrypoint ensures coder can access mounted docker.sock
 # RUN printf '%s\n' \
