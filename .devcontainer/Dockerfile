@@ -1,24 +1,25 @@
-FROM ubuntu
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+ && apt-get install -y curl ca-certificates gnupg lsb-release \
+ && install -m 0755 -d /etc/apt/keyrings \
+ && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+    | gpg --dearmor -o /etc/apt/keyrings/docker.gpg \
+ && chmod a+r /etc/apt/keyrings/docker.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+    https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+    > /etc/apt/sources.list.d/docker.list \
+ && apt-get update \
+ && apt-get install -y docker-ce-cli \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install tools (and clean apt cache to keep image small)
-RUN apt-get update && \
-    apt-get install -y sudo curl wget nano less htop vim fuse-overlayfs && \
-    rm -rf /var/lib/apt/lists/*
+# Optional: non-root user
+ARG USER=coder
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID $USER \
+ && useradd -m -s /bin/bash -u $UID -g $GID $USER
 
-# Create user, add to sudo, and allow passwordless sudo
-RUN useradd -m -s /bin/bash coder && \
-    usermod -aG sudo coder && \
-    echo 'coder ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/010-coder-nopasswd && \
-    chmod 0440 /etc/sudoers.d/010-coder-nopasswd
-
-# Fancy prompt
-RUN echo "PS1='🐳 \[\033[1;36m\]\h \[\033[1;34m\]\W\[\033[0;35m\] \[\033[1;36m\]# \[\033[0m\]'" > /home/coder/.bashrc && \
-    chown coder:coder /home/coder/.bashrc
-
-COPY install-docker.sh /install-docker.sh
-
-RUN chmod +x /install-docker.sh
-
-USER coder
+USER $USER
+WORKDIR /workspaces
