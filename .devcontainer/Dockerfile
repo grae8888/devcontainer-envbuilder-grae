@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install tools (and clean apt cache to keep image small)
 RUN apt-get update && \
-    apt-get install -y sudo curl wget nano less htop vim && \
+    apt-get install -y sudo curl wget nano less htop vim fuse-overlayfs && \
     rm -rf /var/lib/apt/lists/*
 
 # Create user, add to sudo, and allow passwordless sudo
