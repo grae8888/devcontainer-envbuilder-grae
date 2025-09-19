@@ -12,6 +12,7 @@
     "workspaceFolder": "/workspaces",
     "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
     "remoteUser": "root",
+    "containerUser": "root",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
