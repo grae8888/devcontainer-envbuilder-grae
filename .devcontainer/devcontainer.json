@@ -9,6 +9,10 @@
         "--privileged",
         "--network=host",
         "--security-opt=seccomp=unconfined",
+        "--cap-add", "SYS_ADMIN",
+        "--cap-add", "SETUID",
+        "--cap-add", "SETGID",
+        "--device", "/dev/fuse",
         "-h", "${localEnv:HOSTNAME}"
     ],
     "workspaceFolder": "/workspaces",
