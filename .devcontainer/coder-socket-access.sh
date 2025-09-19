@@ -11,4 +11,4 @@ if [ -S "$SOCK" ]; then
   [ -n "$grp" ] && usermod -aG "$grp" coder || true
 fi
 
-exec gosu coder "$@"
+exec gosu coder bash
