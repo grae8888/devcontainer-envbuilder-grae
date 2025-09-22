@@ -23,7 +23,7 @@ RUN groupadd -r coder \
  && echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-coder-nopasswd \
  && chmod 0440 /etc/sudoers.d/010-coder-nopasswd
 
-COPY coder-socket-access.sh .
-RUN chmod +x ./coder-socket-access.sh
+COPY coder-socket-access.sh /coder-socket-access.sh
+RUN chmod +x /coder-socket-access.sh
 
 WORKDIR /workspaces
