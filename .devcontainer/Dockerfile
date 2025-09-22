@@ -17,15 +17,4 @@ RUN apt-get update \
  && apt-get install -y docker-ce-cli \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Create user 'coder' (UID/GID auto-assigned)
-# RUN groupadd -r coder \
-#  && useradd -m -s /bin/bash -g coder coder \
-#  && echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/010-coder-nopasswd \
-#  && chmod 0440 /etc/sudoers.d/010-coder-nopasswd
-
-# COPY coder-socket-access.sh /coder-socket-access.sh
-# RUN chmod +x /coder-socket-access.sh
-
 WORKDIR /workspaces
-
-# USER coder
