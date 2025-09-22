@@ -27,3 +27,5 @@ COPY coder-socket-access.sh /coder-socket-access.sh
 RUN chmod +x /coder-socket-access.sh
 
 WORKDIR /workspaces
+
+USER coder
