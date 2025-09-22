@@ -3,15 +3,9 @@ set -euo pipefail
 
 # Always elevate and run the privileged body
 exec sudo -E bash -c '
-set -euo pipefail
 SOCK=/var/run/docker.sock
-
-if [ -S "$SOCK" ]; then
-  gid="$(stat -c %g "$SOCK")"
-  getent group "$gid" >/dev/null 2>&1 || groupadd -g "$gid" dockersock || true
-  grp="$(getent group "$gid" | cut -d: -f1 || true)"
-  [ -n "$grp" ] && usermod -aG "$grp" coder || true
-fi
-
-sudo su - coder
+gid="$(stat -c %g "$SOCK")"
+getent group "$gid" >/dev/null 2>&1 || groupadd -g "$gid" dockersock || true
+grp="$(getent group "$gid" | cut -d: -f1 || true)"
+[ -n "$grp" ] && usermod -aG "$grp" coder || true
 '
