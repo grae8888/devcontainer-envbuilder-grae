@@ -10,8 +10,8 @@
     ],
     "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
     "workspaceFolder": "/workspaces",
-    "remoteUser": "coder",
-    "postCreateCommand": "sudo /coder-socket-access.sh && sudo su - coder",
+    "remoteUser": "root",
+    "postCreateCommand": "/coder-socket-access.sh",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
