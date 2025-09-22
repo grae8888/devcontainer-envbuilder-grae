@@ -2,15 +2,16 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
-    "onCreateCommand": "/coder-socket-access.sh",
     "runArgs": [
         "--privileged",
         "--network=host",
         "--security-opt=seccomp=unconfined",
         "-h", "${localEnv:HOSTNAME}"
     ],
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
+    "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
+    "workspaceFolder": "/workspaces",
+    "remoteUser": "coder",
+    "postCreateCommand": "sudo chown -R coder:coder /workspaces",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
