@@ -10,7 +10,6 @@
         "-h", "${localEnv:HOSTNAME}"
     ],
     "workspaceFolder": "/workspaces",
-    "remoteEnv": { "HOME": "/workspaces/devcontainer-envbuilder-grae" },
     "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
     "remoteUser": "root",
     "containerUser": "root",
