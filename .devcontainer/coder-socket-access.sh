@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
-
-# Always elevate and run the privileged body
 exec sudo -E bash -c '
 SOCK=/var/run/docker.sock
 gid="$(stat -c %g "$SOCK")"
