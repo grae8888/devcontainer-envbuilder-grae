@@ -26,6 +26,6 @@ RUN groupadd -r coder \
 COPY coder-socket-access.sh .
 RUN chmod +x /coder-socket-access.sh
 
-WORKDIR /workspaces
+RUN mkdir workspaces/testtesttesttest
 
-USER 0
+WORKDIR /workspaces
