@@ -11,7 +11,7 @@
     "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
     "workspaceFolder": "/workspaces",
     "remoteUser": "coder",
-    "onCreateCommand": "sudo groupadd docker && sudo usermod -aG docker coder && newgrp docker",
+    "onCreateCommand": "sudo usermod -aG docker coder && newgrp docker",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
