@@ -9,10 +9,8 @@
         "--security-opt=seccomp=unconfined",
         "-h", "${localEnv:HOSTNAME}"
     ],
-    "workspaceFolder": "/workspaces",
-    "workspaceMount": "source=/home/coder/envbuilder,target=/workspaces,type=bind",
-    "remoteUser": "root",
-    "containerUser": "root",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind",
     "mounts": [
         "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
     ],
